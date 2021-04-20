@@ -1,7 +1,5 @@
 class Cezar():
     def __init__(self):
-        self.text = "abcde ABCDE"
-        self.key = 3
         self.length = 26  # length of English alphabet
         # list of non letter symbols:
         self.non_letters = [' ', '-', ',', '!', '?', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ';', '/', '+',
@@ -10,7 +8,7 @@ class Cezar():
     def encrypt_decrypt(self, text, key, action):  # action - encrypt(e) or decrypt(d)
         action_int = 1  # if action = encrypt
         if action == "d":
-            action_int = -1  # # if action = decrypt
+            action_int = -1  # if action = decrypt
         result = ""
         for i in range(len(text)):
             char = text[i]

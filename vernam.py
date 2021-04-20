@@ -12,7 +12,7 @@ class Vernam():
             else:
                 code_char = ord(text[i]) - ord('a') + alphabet_len
             key_char = ord(key[i]) - ord('A')
-            res = (code_char ^ key_char)          # '^' is XOR
+            res = code_char ^ key_char          # '^' is XOR
             if res < alphabet_len:
                 res += ord('A')
             else:
