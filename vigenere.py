@@ -4,6 +4,14 @@ class Vigenere(Cezar):
         super().__init__()
 
     def make_len_equal(self, str1, str2):  # making str2 length equal to str1 length
+
+        """
+        Делает длину двух строк одинаковой путем добавления в конец второй символов из ее начала
+
+        :param str1: первая строка
+        :param str2: вторая строка
+        :возвращает: вторую строку, когда ее длина стала равной длине первой
+        """
         i = 0
         str2_start_len = len(str2)
         non_letter_number = 0
@@ -16,6 +24,15 @@ class Vigenere(Cezar):
         return str2
 
     def make_chars_equal(self, char1, char2):  # making 2 chars both lowwer or upper
+
+        """
+        Меняет второй символ на символ другого регистра если изначально
+        регистры 1-го и 2-го символов не совпадают
+
+        :param char1: первый символ
+        :param char2: второй символ
+        :возвращает: второй символ, когда того же регистра, что и первый
+        """
         if char1.isupper() and char2.islower():
             char2 = chr(ord(char2) + ord('A') - ord('a'))  # making text and key both upper if they are not
 
@@ -23,7 +40,15 @@ class Vigenere(Cezar):
             char2 = chr(ord(char2) - ord('A') + ord('a'))  # making text and key both lower if they are not
         return char2
 
-    def encrypt(self, text, keyword):                      # text - message, keyword - chiper
+    def encrypt(self, text, keyword):
+
+        """
+        Зашифровывает текст с помощью ключевого слова.
+        
+        :param text: изначальный текст
+        :param keyword: ключ (слово), с помощью которого будет зашифрован текст
+        :возвращает: зашифрованный текст
+        """
         keyword = self.make_len_equal(text, keyword)       # making chiper's length equal to message's length
         result = ""                                        # encrypted message will be in result
         for i in range(len(text)):
@@ -41,7 +66,15 @@ class Vigenere(Cezar):
                     result += chr((ord(char1) + ord(char2) - 2 * ord('a')) % self.length + ord('a'))
         return result
 
-    def decrypt(self, text, keyword):                   # text - message, keyword - chiper
+    def decrypt(self, text, keyword):
+
+        """
+        Расшифровывает текст с помощью ключевого слова.
+        
+        :param text: зашифрованный текст
+        :param keyword: ключ (слово), с помощью которого будет расшифрован текст
+        :возвращает: расшифрованный текст
+        """
         keyword = self.make_len_equal(text, keyword)    # making chiper's length equal to message's length
         result = ""                                     # decrypted message will be in result
         for i in range(len(text)):

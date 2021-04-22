@@ -8,6 +8,16 @@ class Stegonography():
 
     def encrypt(self, input_img_name, output_img_name, txt_file):
 
+        """
+        Зашифровывает текст из файла txt_file в картинку input_img_name 
+        и сохраняет картинку с зашифрованным текстом в файл output_img_name.
+        
+        :param input_img_name: название изначальной BMP картинки
+        :param output_img_name: название зашифрованной BMP картинки (создаст или перепишет)
+        :param txt_file: название файла с текстом, который будет зашифрован
+        :возвращает: TRUE если функция зашифровала, FALSE если не можт зашифровать из-за слишком длинного текста
+        """
+
         text_len = os.stat(txt_file).st_size
         img_len = os.stat(input_img_name).st_size
 
@@ -42,6 +52,17 @@ class Stegonography():
         return True
 
     def decrypt(self, encoded_img, output_txt, symbols_to_read):
+        
+        """
+        Читает символы из зашифрованной картинки encoded_img, расшифровывает и
+        записывает их в текстовый файл output_txt.
+
+        :param encoded_img: название зашифрованной BMP картинки
+        :param output_txt: название текстового айла, куда будет записан результат
+        :param symbols_to_read: количество символов в зашифрованной картинке
+        
+        :возвращает: TRUE если функция расифровала, FALSE если не можт расифровать из-за слишком длинного текста
+        """
 
         img_len = os.stat(encoded_img).st_size
 
@@ -77,6 +98,12 @@ class Stegonography():
         return True
 
     def create_masks(self):
+
+        """
+        Создает текстовую маску и маску изображения
+        
+        :возвращает: маски для текста и картинки
+        """
         text_mask = 0b11111111
         img_mask = 0b11111111
         text_mask <<= 7

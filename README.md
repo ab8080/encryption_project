@@ -42,18 +42,31 @@ python3 review.py <путь к файлу в котором будет расш�
 ```
 
 # __Примеры__
+Зашифровать шифром Цезаря текст из файла 1.txt:
 ```bash
-   python3 review.py /home/aleksandr/Review/python/1.txt ceasar encrypt
-
-   python3 review.py /home/aleksandr/Review/python/1.txt vernam encrypt
-
-   python3 review.py /home/aleksandr/Review/python/1.txt ceasar hack
-
-   python3 review.py /home/aleksandr/Review/python/1.txt vigenere decrypt
-
-   python3 review.py /home/aleksandr/Review/python/1.txt hill encrypt
-
-   python3 review.py /home/aleksandr/Review/python/text1.txt steg encrypt 1.bmp img.bmp
-
-   python3 review.py /home/aleksandr/Review/python/2.txt steg decrypt img.bmp 22
+   python3 review.py 1.txt ceasar encrypt
+```
+Зашифровать шифром Вернама текст из файла 1.txt:
+```bash
+   python3 review.py 1.txt vernam encrypt
+```
+Взломать текст из файла 1.txt зашифрованный шифром Цезаря:
+```bash
+   python3 review.py 1.txt ceasar hack
+```
+Расшифровать текст из файла 1.txt зашифрованный шифром Виженера:
+```bash
+   python3 review.py 1.txt vigenere decrypt
+```
+Зашифровать шифром Хилла текст из файла 1.txt:
+```bash
+   python3 review.py 1.txt hill encrypt
+```
+Зашифровать текст из файла text1.txt в картинку 1.bmp с помощью стеганографии, картинку с зашифрованным текстом назвать img.bmp:
+```bash
+   python3 review.py text1.txt steg encrypt 1.bmp img.bmp
+```
+Расшифровать текст из картинки img.bmp, длина текста - 22 символа, записать расшифрованный текст в файл 2.txt:
+```bash
+   python3 review.py 2.txt steg decrypt img.bmp 22
 ```

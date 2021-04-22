@@ -6,12 +6,21 @@ class Cezar():
                             '(', ')', ':', chr(13), chr(10), chr(4), chr(3)]
 
     def encrypt_decrypt(self, text, key, action):  # action - encrypt(e) or decrypt(d)
+
+        """
+        Зашифровывает или расшифровывает текст (в зависимости от action)
+        с помощью введенного ключа
+
+        :param text: ткст который надо зашифровать или расшифровать
+        :param key: количество символов на которое надо сдвинуться, чтобы зашифровать или расшифровать
+        :param action: действие - зашифровать или расшифровать
+        :возвращает: зашифрованный или расшифрованный текст (в зависимости от action)
+        """
         action_int = 1  # if action = encrypt
         if action == "d":
             action_int = -1  # if action = decrypt
         result = ""
-        for i in range(len(text)):
-            char = text[i]
+        for char in text:
 
             if char in self.non_letters:
                 result += char
@@ -25,7 +34,16 @@ class Cezar():
         return result
 
     def hack(self, text):
+
+        """
+        Взламывает зашифрованный текст (подберает такой ключ, чтобы в расшифрованном
+        тексте буква е встречалась чаще других букв, т.к. буква е самая часта в английском)
+
+        :param text: зашифрованный текст
+        :возвращает: расшифрованный текст
+        """
         from collections import Counter
+        DECRYPT = "d"
         count = Counter(list(text)).values()  # list of number of each unique symbol
         letters = Counter(list(text)).keys()  # list of unique symbols in text
         stats = dict(zip(count, letters))  # dictionary with keys = count and values = letters
@@ -34,8 +52,8 @@ class Cezar():
             stats[0] = stats.pop(max_count)
             max_count = max(stats.keys())
         key_expected = ord(stats[max_count]) - ord('e')  # 'e' is most frequent letter in English
-        if ord(stats[max_count]) < 91:
+        if ord(stats[max_count]) <= ord('Z'):
             key_expected = ord(stats[max_count]) - ord('E')
-        return self.encrypt_decrypt(text, key_expected, "d")
+        return self.encrypt_decrypt(text, key_expected, DECRYPT)
 
 
