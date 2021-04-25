@@ -34,13 +34,13 @@ class Vigenere(Cezar):
         :возвращает: второй символ, когда того же регистра, что и первый
         """
         if char1.isupper() and char2.islower():
-            char2 = chr(ord(char2) + ord('A') - ord('a'))  # making text and key both upper if they are not
+            char2 = chr(ord(char2) + ord("A") - ord("a"))  # making text and key both upper if they are not
 
         if char1.islower() and char2.isupper():
-            char2 = chr(ord(char2) - ord('A') + ord('a'))  # making text and key both lower if they are not
+            char2 = chr(ord(char2) - ord("A") + ord("a"))  # making text and key both lower if they are not
         return char2
 
-    def encrypt(self, text, keyword):
+    def encrypt(self, text, keyword, _):
 
         """
         Зашифровывает текст с помощью ключевого слова.
@@ -60,13 +60,13 @@ class Vigenere(Cezar):
             else:
                 # Encrypt uppercase characters
                 if char1.isupper():
-                    result += chr((ord(char1) + ord(char2) - 2 * ord('A')) % self.length + ord('A'))
+                    result += chr((ord(char1) + ord(char2) - 2 * ord("A")) % self.length + ord("A"))
                 # Encrypt lowercase characters
                 else:
-                    result += chr((ord(char1) + ord(char2) - 2 * ord('a')) % self.length + ord('a'))
+                    result += chr((ord(char1) + ord(char2) - 2 * ord("a")) % self.length + ord("a"))
         return result
 
-    def decrypt(self, text, keyword):
+    def decrypt(self, text, keyword, _):
 
         """
         Расшифровывает текст с помощью ключевого слова.
@@ -86,10 +86,10 @@ class Vigenere(Cezar):
             else:
                 # Decrypt uppercase characters
                 if char1.isupper():
-                    result += chr((ord(char1) - ord(char2)) % self.length + ord('A'))
+                    result += chr((ord(char1) - ord(char2)) % self.length + ord("A"))
                 # Decrypt lowercase characters
                 else:
-                    result += chr((ord(char1) - ord(char2)) % self.length + ord('a'))
+                    result += chr((ord(char1) - ord(char2)) % self.length + ord("a"))
         return result
 
 

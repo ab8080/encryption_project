@@ -20,14 +20,15 @@ class Stegonography():
 
         text_len = os.stat(txt_file).st_size
         img_len = os.stat(input_img_name).st_size
+        bits_in_byte = 8
 
-        if text_len >= img_len / 8 - self.BMP_HEADER_SIZE:
+        if text_len >= img_len / bits_in_byte - self.BMP_HEADER_SIZE:
             print("Too long text")
             return False
 
-        text = open(txt_file, 'r')
-        input_image = open(input_img_name, 'rb')
-        output_image = open(output_img_name, 'wb')
+        text = open(txt_file, "r")
+        input_image = open(input_img_name, "rb")
+        output_image = open(output_img_name, "wb")
         bmp_header = input_image.read(self.BMP_HEADER_SIZE)
         output_image.write(bmp_header)
         text_mask, img_mask = self.create_masks()
@@ -70,8 +71,8 @@ class Stegonography():
             print("Too much symbols to read")
             return False
 
-        text = open(output_txt, 'w', encoding='utf-8')
-        encoded_bmp = open(encoded_img, 'rb')
+        text = open(output_txt, "w", encoding="utf-8")
+        encoded_bmp = open(encoded_img, "rb")
 
         encoded_bmp.seek(self.BMP_HEADER_SIZE)
 

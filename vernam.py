@@ -1,6 +1,6 @@
 class Vernam():
 
-    def encrypt_decrypt(self, text, key):
+    def encrypt_decrypt(self, text, key, _):
 
         """
         Зашифровывает и одновременно расшифровывает зашифрованный текст
@@ -25,7 +25,7 @@ class Vernam():
             if res < alphabet_len:
                 res += ord("A")
             else:
-                res += ord('a') - alphabet_len
+                res += ord("a") - alphabet_len
             result += chr(res)
         return result
 

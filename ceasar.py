@@ -1,3 +1,5 @@
+from collections import Counter
+
 class Cezar():
     def __init__(self):
         self.length = 26  # length of English alphabet
@@ -16,8 +18,9 @@ class Cezar():
         :param action: действие - зашифровать или расшифровать
         :возвращает: зашифрованный или расшифрованный текст (в зависимости от action)
         """
+        key = int(key)
         action_int = 1  # if action = encrypt
-        if action == "d":
+        if action == "decrypt":
             action_int = -1  # if action = decrypt
         result = ""
         for char in text:
@@ -33,7 +36,7 @@ class Cezar():
                     result += chr((ord(char) + action_int * key - ord('a')) % self.length + ord('a'))
         return result
 
-    def hack(self, text):
+    def hack(self, text, _, __):
 
         """
         Взламывает зашифрованный текст (подберает такой ключ, чтобы в расшифрованном
@@ -42,8 +45,8 @@ class Cezar():
         :param text: зашифрованный текст
         :возвращает: расшифрованный текст
         """
-        from collections import Counter
-        DECRYPT = "d"
+        
+        # DECRYPT = "d"
         count = Counter(list(text)).values()  # list of number of each unique symbol
         letters = Counter(list(text)).keys()  # list of unique symbols in text
         stats = dict(zip(count, letters))  # dictionary with keys = count and values = letters
@@ -51,9 +54,9 @@ class Cezar():
         while stats[max_count] in self.non_letters:  # while the most common symbol is not letter I make its count = 0
             stats[0] = stats.pop(max_count)
             max_count = max(stats.keys())
-        key_expected = ord(stats[max_count]) - ord('e')  # 'e' is most frequent letter in English
-        if ord(stats[max_count]) <= ord('Z'):
-            key_expected = ord(stats[max_count]) - ord('E')
-        return self.encrypt_decrypt(text, key_expected, DECRYPT)
+        key_expected = ord(stats[max_count]) - ord("e")  # 'e' is most frequent letter in English
+        if ord(stats[max_count]) <= ord("Z"):
+            key_expected = ord(stats[max_count]) - ord("E")
+        return self.encrypt_decrypt(text, key_expected, "decrypt")
 
 

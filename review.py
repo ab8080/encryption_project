@@ -15,35 +15,31 @@ parser.add_argument("output_img_or_chars_num", nargs='?')
 
 args = parser.parse_args()
 
+
 with open(args.txt_file, "r+") as f:
     text = f.read()
-    if args.chiper == "ceasar":
-        code = Cezar()
-        if args.action == "encrypt":
-            key = int(input())
-            print(code.encrypt_decrypt(text, key, "e"))
-        if args.action == "decrypt":
-            key = int(input())
-            print(code.encrypt_decrypt(text, key, "d"))
-        if args.action == "hack":
-            print(code.hack(text))
-    if args.chiper == "vigenere":
-        code = Vigenere()
-        if args.action == "encrypt":
-            key = input()
-            print(code.encrypt(text, key))
-        if args.action == "decrypt":
-            key = input()
-            print(code.decrypt(text, key))
-    if args.chiper == "vernam":
-        code = Vernam()
+    key = 0
+    if args.action != "hack" and args.chiper != "steg":
         key = input()
-        print(code.encrypt_decrypt(text, key))
-    if args.chiper == "hill":
-        code = Hill()
-        key = input()
-        print(code.encrypt_decrypt(text, key, args.action))
-    if args.chiper == "steg":
+    list_of_functions = {
+        "ceasar_encrypt": Cezar().encrypt_decrypt,
+        "ceasar_decrypt": Cezar().encrypt_decrypt,
+        "ceasar_hack": Cezar().hack,
+
+        "vigenere_encrypt": Vigenere().encrypt,
+        "vigenere_decrypt": Vigenere().decrypt,
+
+        "vernam_encrypt": Vernam().encrypt_decrypt,
+        "vernam_decrypt": Vernam().encrypt_decrypt,
+
+        "hill_encrypt": Hill().encrypt_decrypt,
+        "hill_decrypt": Hill().encrypt_decrypt
+
+    } 
+    if args.chiper != "steg":  
+        print(list_of_functions[f"{args.chiper}_{args.action}"](text, key, args.action))
+    
+    elif args.chiper == "steg":
         code = Stegonography()
         if args.action == "encrypt":
             code.encrypt(args.input_img, args.output_img_or_chars_num, args.txt_file)

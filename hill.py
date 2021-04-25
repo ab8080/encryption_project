@@ -16,18 +16,16 @@ class Hill:
         :возвращает: зашифрованный или расшифрованный текст (в зависимости от action)
         """
         abc_len = 26
-        matr = []
-        txt = []
-        encrypted_message = ""
-        for i in range(len(text)):
-            matr.append([0] * len(text))
         
-        for char in text:
-            txt.append([ord(char) - ord('A')])
+        encrypted_message = ""
+        
+        matr = [[0] * len(text) for i in range(len(text))]
+        
+        txt = [[ord(char) - ord("A")] for char in text]
         
         for i in range(int(len(key) / len(text))):
             for j in range(int(len(key) / len(text))):
-                matr[i][j] = ord(key[i * len(text) + j]) - ord('A')
+                matr[i][j] = ord(key[i * len(text) + j]) - ord("A")
         NpKey = np.array(matr)
         if action == "decrypt":
             def get_inverse_key(key):
@@ -40,11 +38,11 @@ class Hill:
                 или выдает ошибку если не существует обратной матрицы к матрице key по 
                 модулю равному длине алфавита (с помощью таких матриц невозможно расшифровать текст)
                 """
-                d = int(det(key))
-                return np.array(np.round(inv(key) * d) * int(invert(d, abc_len)), dtype=int) % abc_len
+                determinant = int(det(key))
+                return np.array(np.round(inv(key) * determinant) * int(invert(determinant, abc_len)), dtype=int) % abc_len
             NpKey = (get_inverse_key(NpKey))
         NpText = np.array(txt)
         NpMatr = (np.dot(NpKey, NpText)) % abc_len
         for i in range(len(text)):
-            encrypted_message += chr(NpMatr[i][0] + ord('A'))
+            encrypted_message += chr(NpMatr[i][0] + ord("A"))
         return encrypted_message
