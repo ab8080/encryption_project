@@ -13,7 +13,7 @@
 
 # __Сам запуск__
 ```bash
-   git clone https://github.com/Sasha-nagibator/review1 -b dev
+   git clone https://github.com/Sasha-nagibator/python -b dev
 
    cd python
 
