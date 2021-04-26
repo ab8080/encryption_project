@@ -5,6 +5,8 @@ import sys
 class Stegonography():
 
     BMP_HEADER_SIZE = 54
+    BITS_IN_BYTE = 8
+    DEGREE = 1
 
     def encrypt(self, input_img_name, output_img_name, txt_file):
 
@@ -20,9 +22,8 @@ class Stegonography():
 
         text_len = os.stat(txt_file).st_size
         img_len = os.stat(input_img_name).st_size
-        bits_in_byte = 8
 
-        if text_len >= img_len / bits_in_byte - self.BMP_HEADER_SIZE:
+        if text_len >= img_len / self.BITS_IN_BYTE - self.BMP_HEADER_SIZE:
             print("Too long text")
             return False
 
@@ -38,14 +39,14 @@ class Stegonography():
                 break
             symbol = ord(symbol)
 
-            for byte_amount in range(8):
+            for byte_amount in range(self.BITS_IN_BYTE):
                 img_byte = int.from_bytes(input_image.read(1), sys.byteorder) & img_mask
                 bits = symbol & text_mask
-                bits >>= 7
+                bits >>= self.BITS_IN_BYTE - self.DEGREE
                 img_byte |= bits
 
                 output_image.write(img_byte.to_bytes(1, sys.byteorder))
-                symbol <<= 1
+                symbol <<= self.DEGREE
         output_image.write(input_image.read())
         text.close()
         input_image.close()
@@ -67,7 +68,7 @@ class Stegonography():
 
         img_len = os.stat(encoded_img).st_size
 
-        if symbols_to_read >= img_len / 8 - self.BMP_HEADER_SIZE:
+        if symbols_to_read >= img_len / self.BITS_IN_BYTE - self.BMP_HEADER_SIZE:
             print("Too much symbols to read")
             return False
 
@@ -83,12 +84,12 @@ class Stegonography():
         while read < symbols_to_read:
             symbol = 0
 
-            for bits_read in range(8):
+            for bits_read in range(self.BITS_IN_BYTE):
                 img_byte = int.from_bytes(encoded_bmp.read(1), sys.byteorder) & img_mask
-                symbol <<= 1
+                symbol <<= self.DEGREE
                 symbol |= img_byte
 
-            if chr(symbol) == '\n' and len(os.linesep) == 2:
+            if chr(symbol) == "\n" and os.linesep == "\r\n":
                 read += 1
 
             read += 1
@@ -105,11 +106,14 @@ class Stegonography():
         
         :возвращает: маски для текста и картинки
         """
-        text_mask = 0b11111111
-        img_mask = 0b11111111
-        text_mask <<= 7
-        text_mask %= 256
-        img_mask >>= 1
-        img_mask <<= 1
+        start_mask = 0b11111111
+        values_in_byte = 256
+
+        text_mask = start_mask
+        img_mask = start_mask
+        text_mask <<= self.BITS_IN_BYTE - self.DEGREE
+        text_mask %= values_in_byte
+        img_mask >>= self.DEGREE
+        img_mask <<= self.DEGREE
         return text_mask, img_mask
 
