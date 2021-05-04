@@ -11,13 +11,15 @@ class Stegonography():
     def encrypt(self, input_img_name, output_img_name, txt_file):
 
         """
-        Зашифровывает текст из файла txt_file в картинку input_img_name 
+        Зашифровывает текст из файла txt_file в картинку input_img_name
         и сохраняет картинку с зашифрованным текстом в файл output_img_name.
-        
+
         :param input_img_name: название изначальной BMP картинки
-        :param output_img_name: название зашифрованной BMP картинки (создаст или перепишет)
+        :param output_img_name: название зашифрованной BMP картинки
+        (создаст или перепишет)
         :param txt_file: название файла с текстом, который будет зашифрован
-        :возвращает: TRUE если функция зашифровала, FALSE если не можт зашифровать из-за слишком длинного текста
+        :возвращает: TRUE если функция зашифровала, FALSE если не можт
+        зашифровать из-за слишком длинного текста
         """
 
         text_len = os.stat(txt_file).st_size
@@ -40,7 +42,8 @@ class Stegonography():
             symbol = ord(symbol)
 
             for byte_amount in range(self.BITS_IN_BYTE):
-                img_byte = int.from_bytes(input_image.read(1), sys.byteorder) & img_mask
+                img_byte = int.from_bytes(input_image.read(1), sys.byteorder)\
+                           & img_mask
                 bits = symbol & text_mask
                 bits >>= self.BITS_IN_BYTE - self.DEGREE
                 img_byte |= bits
@@ -54,21 +57,24 @@ class Stegonography():
         return True
 
     def decrypt(self, encoded_img, output_txt, symbols_to_read):
-        
+
         """
-        Читает символы из зашифрованной картинки encoded_img, расшифровывает и
-        записывает их в текстовый файл output_txt.
+        Читает символы из зашифрованной картинки encoded_img,
+        расшифровывает и записывает их в текстовый файл output_txt.
 
         :param encoded_img: название зашифрованной BMP картинки
-        :param output_txt: название текстового айла, куда будет записан результат
+        :param output_txt: название текстового айла, куда будет
+        записан результат
         :param symbols_to_read: количество символов в зашифрованной картинке
-        
-        :возвращает: TRUE если функция расифровала, FALSE если не можт расифровать из-за слишком длинного текста
+
+        :возвращает: TRUE если функция расифровала, FALSE если не может
+        расифровать из-за слишком длинного текста
         """
 
         img_len = os.stat(encoded_img).st_size
 
-        if symbols_to_read >= img_len / self.BITS_IN_BYTE - self.BMP_HEADER_SIZE:
+        if symbols_to_read >= img_len / self.BITS_IN_BYTE -\
+                self.BMP_HEADER_SIZE:
             print("Too much symbols to read")
             return False
 
@@ -85,7 +91,8 @@ class Stegonography():
             symbol = 0
 
             for bits_read in range(self.BITS_IN_BYTE):
-                img_byte = int.from_bytes(encoded_bmp.read(1), sys.byteorder) & img_mask
+                img_byte = int.from_bytes(encoded_bmp.read(1), sys.byteorder)\
+                           & img_mask
                 symbol <<= self.DEGREE
                 symbol |= img_byte
 
@@ -103,7 +110,7 @@ class Stegonography():
 
         """
         Создает текстовую маску и маску изображения
-        
+
         :возвращает: маски для текста и картинки
         """
         start_mask = 0b11111111
@@ -116,4 +123,3 @@ class Stegonography():
         img_mask >>= self.DEGREE
         img_mask <<= self.DEGREE
         return text_mask, img_mask
-

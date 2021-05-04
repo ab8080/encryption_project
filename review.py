@@ -35,13 +35,16 @@ with open(args.txt_file, "r+") as f:
         "hill_encrypt": Hill().encrypt_decrypt,
         "hill_decrypt": Hill().encrypt_decrypt
 
-    } 
-    if args.chiper != "steg":  
-        print(list_of_functions[f"{args.chiper}_{args.action}"](text, key, args.action))
-    
+    }
+    if args.chiper != "steg":
+        print(list_of_functions[f"{args.chiper}_{args.action}"]
+              (text, key, args.action))
+
     elif args.chiper == "steg":
         code = Stegonography()
         if args.action == "encrypt":
-            code.encrypt(args.input_img, args.output_img_or_chars_num, args.txt_file)
+            code.encrypt(args.input_img, args.output_img_or_chars_num,
+                         args.txt_file)
         if args.action == "decrypt":
-            code.decrypt(args.input_img, args.txt_file, int(args.output_img_or_chars_num))
+            code.decrypt(args.input_img, args.txt_file,
+                         int(args.output_img_or_chars_num))

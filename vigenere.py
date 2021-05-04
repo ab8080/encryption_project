@@ -1,12 +1,15 @@
 from ceasar import Cezar
+
+
 class Vigenere(Cezar):
     def __init__(self):
         super().__init__()
 
-    def make_len_equal(self, str1, str2):  # making str2 length equal to str1 length
+    def make_len_equal(self, str1, str2):
 
         """
-        Делает длину двух строк одинаковой путем добавления в конец второй символов из ее начала
+        Делает длину двух строк одинаковой путем добавления в
+        конец второй символов из ее начала
 
         :param str1: первая строка
         :param str2: вторая строка
@@ -15,15 +18,16 @@ class Vigenere(Cezar):
         i = 0
         str2_start_len = len(str2)
         non_letter_number = 0
-        while len(str2) < len(str1):   # making keyword's length equal to text length
-            if str1[i + str2_start_len + non_letter_number] in self.non_letters:
+        while len(str2) < len(str1):
+            if str1[i + str2_start_len + non_letter_number] \
+                    in self.non_letters:
                 str2 += str1[i + str2_start_len + non_letter_number]
                 non_letter_number += 1
             str2 += str2[i % str2_start_len]
             i += 1
         return str2
 
-    def make_chars_equal(self, char1, char2):  # making 2 chars both lowwer or upper
+    def make_chars_equal(self, char1, char2):
 
         """
         Меняет второй символ на символ другого регистра если изначально
@@ -33,24 +37,27 @@ class Vigenere(Cezar):
         :param char2: второй символ
         :возвращает: второй символ, когда того же регистра, что и первый
         """
+        # making text and key both upper if they are not
         if char1.isupper() and char2.islower():
-            char2 = chr(ord(char2) + ord("A") - ord("a"))  # making text and key both upper if they are not
-
+            char2 = chr(ord(char2) + ord("A") - ord("a"))
+        # making text and key both lower if they are not
         if char1.islower() and char2.isupper():
-            char2 = chr(ord(char2) - ord("A") + ord("a"))  # making text and key both lower if they are not
+            char2 = chr(ord(char2) - ord("A") + ord("a"))
         return char2
 
     def encrypt(self, text, keyword, _):
 
         """
         Зашифровывает текст с помощью ключевого слова.
-        
+
         :param text: изначальный текст
-        :param keyword: ключ (слово), с помощью которого будет зашифрован текст
+        :param keyword: ключ (слово), с помощью
+        которого будет зашифрован текст
         :возвращает: зашифрованный текст
         """
-        keyword = self.make_len_equal(text, keyword)       # making chiper's length equal to message's length
-        result = ""                                        # encrypted message will be in result
+        # making chiper's length equal to message's length
+        keyword = self.make_len_equal(text, keyword)
+        result = ""  # encrypted message will be in result
         for i in range(len(text)):
             char1 = text[i]
             char2 = keyword[i]
@@ -60,23 +67,27 @@ class Vigenere(Cezar):
             else:
                 # Encrypt uppercase characters
                 if char1.isupper():
-                    result += chr((ord(char1) + ord(char2) - 2 * ord("A")) % self.length + ord("A"))
+                    result += chr((ord(char1) + ord(char2) - 2 * ord("A"))
+                                  % self.length + ord("A"))
                 # Encrypt lowercase characters
                 else:
-                    result += chr((ord(char1) + ord(char2) - 2 * ord("a")) % self.length + ord("a"))
+                    result += chr((ord(char1) + ord(char2) - 2 * ord("a"))
+                                  % self.length + ord("a"))
         return result
 
     def decrypt(self, text, keyword, _):
 
         """
         Расшифровывает текст с помощью ключевого слова.
-        
+
         :param text: зашифрованный текст
-        :param keyword: ключ (слово), с помощью которого будет расшифрован текст
+        :param keyword: ключ (слово), с помощью которого
+        будет расшифрован текст
         :возвращает: расшифрованный текст
         """
-        keyword = self.make_len_equal(text, keyword)    # making chiper's length equal to message's length
-        result = ""                                     # decrypted message will be in result
+        # making chiper's length equal to message's length
+        keyword = self.make_len_equal(text, keyword)
+        result = ""  # decrypted message will be in result
         for i in range(len(text)):
             char1 = text[i]
             char2 = keyword[i]
@@ -86,10 +97,10 @@ class Vigenere(Cezar):
             else:
                 # Decrypt uppercase characters
                 if char1.isupper():
-                    result += chr((ord(char1) - ord(char2)) % self.length + ord("A"))
+                    result += chr((ord(char1) - ord(char2))
+                                  % self.length + ord("A"))
                 # Decrypt lowercase characters
                 else:
-                    result += chr((ord(char1) - ord(char2)) % self.length + ord("a"))
+                    result += chr((ord(char1) - ord(char2))
+                                  % self.length + ord("a"))
         return result
-
-

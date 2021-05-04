@@ -11,18 +11,20 @@ class Hill:
         с помощью введенного ключа
 
         :param text: ткст который надо зашифровать или расшифровать
-        :param key: ключевое слово (матрица), с помощью которого будет зашифрован или расшифрован текст
+        :param key: ключевое слово (матрица), с помощью которого будет
+        зашифрован или расшифрован текст
         :param action: действие - зашифровать или расшифровать
-        :возвращает: зашифрованный или расшифрованный текст (в зависимости от action)
+        :возвращает: зашифрованный или расшифрованный текст
+        (в зависимости от action)
         """
         abc_len = 26
-        
+
         encrypted_message = ""
-        
+
         matr = [[0] * len(text) for i in range(len(text))]
-        
+
         txt = [[ord(char) - ord("A")] for char in text]
-        
+
         for i in range(int(len(key) / len(text))):
             for j in range(int(len(key) / len(text))):
                 matr[i][j] = ord(key[i * len(text) + j]) - ord("A")
@@ -31,15 +33,19 @@ class Hill:
             def get_inverse_key(key):
 
                 """
-                Находит обратную матрицу к матрице key по модулю равному длине алфавита
+                Находит обратную матрицу к матрице key по модулю равному
+                длине алфавита
 
                 :param key: ключевое слово(матрица)
-                :возвращает: обратную матрицу к матрице key по модулю равному длине алфавита
-                или выдает ошибку если не существует обратной матрицы к матрице key по 
-                модулю равному длине алфавита (с помощью таких матриц невозможно расшифровать текст)
+                :возвращает: обратную матрицу к матрице key по модулю равному
+                длине алфавита или выдает ошибку если не существует обратной
+                матрицы к матрице key по модулю равному длине алфавита
+                (с помощью таких матриц невозможно расшифровать текст)
                 """
                 determinant = int(det(key))
-                return np.array(np.round(inv(key) * determinant) * int(invert(determinant, abc_len)), dtype=int) % abc_len
+                return np.array(np.round(inv(key) * determinant)
+                                * int(invert(determinant, abc_len)),
+                                dtype=int) % abc_len
             NpKey = (get_inverse_key(NpKey))
         NpText = np.array(txt)
         NpMatr = (np.dot(NpKey, NpText)) % abc_len

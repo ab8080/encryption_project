@@ -7,7 +7,8 @@ class Vernam():
         с помощью введенного ключа
 
         :param text: ткст который надо зашифровать или расшифровать
-        :param key: ключ, с помощью которого будет зашифрован или расшифрован текст
+        :param key: ключ, с помощью которого будет зашифрован или
+        расшифрован текст
         :возвращает: зашифрованный или расшифрованный текст
         """
         alphabet_len = 26
@@ -17,7 +18,8 @@ class Vernam():
             overflow = 1
         for i in range(len(text) - overflow):
             if ord(text[i]) <= ord("Z"):
-                code_char = ord(text[i]) - ord("A")  # "A" = 0, "B" = 1, ... , "Z" = 25, "a" = 26, ... "f" = 31
+                # "A" = 0, "B" = 1, ... , "Z" = 25, "a" = 26, ... "f" = 31
+                code_char = ord(text[i]) - ord("A")
             else:
                 code_char = ord(text[i]) - ord("a") + alphabet_len
             key_char = ord(key[i]) - ord("A")
@@ -28,4 +30,3 @@ class Vernam():
                 res += ord("a") - alphabet_len
             result += chr(res)
         return result
-
