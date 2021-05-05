@@ -29,31 +29,31 @@ class Stegonography():
             print("Too long text")
             return False
 
-        text = open(txt_file, "r")
-        input_image = open(input_img_name, "rb")
-        output_image = open(output_img_name, "wb")
-        bmp_header = input_image.read(self.BMP_HEADER_SIZE)
-        output_image.write(bmp_header)
-        text_mask, img_mask = self.create_masks()
-        while True:
-            symbol = text.read(1)
-            if not symbol:
-                break
-            symbol = ord(symbol)
+        with open(txt_file, "r") as text:
+            with open(input_img_name, "rb") as input_image:
+                with open(output_img_name, "wb") as output_image:
+                    bmp_header = input_image.read(self.BMP_HEADER_SIZE)
+                    output_image.write(bmp_header)
+                    text_mask, img_mask = self.create_masks()
+                    while True:
+                        symbol = text.read(1)
+                        if not symbol:
+                            break
+                        symbol = ord(symbol)
 
-            for byte_amount in range(self.BITS_IN_BYTE):
-                img_byte = int.from_bytes(input_image.read(1), sys.byteorder)\
-                           & img_mask
-                bits = symbol & text_mask
-                bits >>= self.BITS_IN_BYTE - self.DEGREE
-                img_byte |= bits
+                        for byte_amount in range(self.BITS_IN_BYTE):
+                            img_byte = int.from_bytes(input_image.read(1),
+                                                      sys.byteorder)\
+                                       & img_mask
+                            bits = symbol & text_mask
+                            bits >>= self.BITS_IN_BYTE - self.DEGREE
+                            img_byte |= bits
 
-                output_image.write(img_byte.to_bytes(1, sys.byteorder))
-                symbol <<= self.DEGREE
-        output_image.write(input_image.read())
-        text.close()
-        input_image.close()
-        output_image.close()
+                            output_image.write(img_byte.to_bytes
+                                               (1, sys.byteorder))
+                            symbol <<= self.DEGREE
+                    output_image.write(input_image.read())
+
         return True
 
     def decrypt(self, encoded_img, output_txt, symbols_to_read):
@@ -78,32 +78,31 @@ class Stegonography():
             print("Too much symbols to read")
             return False
 
-        text = open(output_txt, "w", encoding="utf-8")
-        encoded_bmp = open(encoded_img, "rb")
+        with open(output_txt, "w", encoding="utf-8") as text:
+            with open(encoded_img, "rb") as encoded_bmp:
 
-        encoded_bmp.seek(self.BMP_HEADER_SIZE)
+                encoded_bmp.seek(self.BMP_HEADER_SIZE)
 
-        _, img_mask = self.create_masks()
-        img_mask = ~img_mask
+                _, img_mask = self.create_masks()
+                img_mask = ~img_mask
 
-        read = 0
-        while read < symbols_to_read:
-            symbol = 0
+                read = 0
+                while read < symbols_to_read:
+                    symbol = 0
 
-            for bits_read in range(self.BITS_IN_BYTE):
-                img_byte = int.from_bytes(encoded_bmp.read(1), sys.byteorder)\
-                           & img_mask
-                symbol <<= self.DEGREE
-                symbol |= img_byte
+                    for bits_read in range(self.BITS_IN_BYTE):
+                        img_byte = int.from_bytes(encoded_bmp.read(1),
+                                                  sys.byteorder)\
+                                   & img_mask
+                        symbol <<= self.DEGREE
+                        symbol |= img_byte
 
-            if chr(symbol) == "\n" and os.linesep == "\r\n":
-                read += 1
+                    if chr(symbol) == "\n" and os.linesep == "\r\n":
+                        read += 1
 
-            read += 1
-            text.write(chr(symbol))
+                    read += 1
+                    text.write(chr(symbol))
 
-        text.close()
-        encoded_bmp.close()
         return True
 
     def create_masks(self):

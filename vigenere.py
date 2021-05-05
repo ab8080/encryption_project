@@ -45,7 +45,7 @@ class Vigenere(Cezar):
             char2 = chr(ord(char2) - ord("A") + ord("a"))
         return char2
 
-    def encrypt(self, text, keyword, _):
+    def encrypt(self, text, keyword, *args):
 
         """
         Зашифровывает текст с помощью ключевого слова.
@@ -75,7 +75,7 @@ class Vigenere(Cezar):
                                   % self.length + ord("a"))
         return result
 
-    def decrypt(self, text, keyword, _):
+    def decrypt(self, text, keyword, *args):
 
         """
         Расшифровывает текст с помощью ключевого слова.

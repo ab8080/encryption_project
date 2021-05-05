@@ -43,7 +43,7 @@ class Cezar():
                                   % self.length + ord('a'))
         return result
 
-    def hack(self, text, _, __):
+    def hack(self, text, *args):
 
         """
         Взламывает зашифрованный текст (подберает такой ключ, чтобы в

@@ -1,5 +1,6 @@
-from gmpy2 import invert
 import numpy as np
+
+from gmpy2 import invert
 from numpy.linalg import det, inv
 
 

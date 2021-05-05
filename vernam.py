@@ -1,6 +1,6 @@
 class Vernam():
 
-    def encrypt_decrypt(self, text, key, _):
+    def encrypt_decrypt(self, text, key, *args):
 
         """
         Зашифровывает и одновременно расшифровывает зашифрованный текст

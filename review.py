@@ -1,9 +1,11 @@
 import argparse
+
 from ceasar import Cezar
-from vigenere import Vigenere
-from vernam import Vernam
 from hill import Hill
 from stegonography import Stegonography
+from vigenere import Vigenere
+from vernam import Vernam
+
 
 parser = argparse.ArgumentParser()
 
@@ -39,7 +41,11 @@ with open(args.txt_file, "r+") as f:
     if args.chiper != "steg":
         print(list_of_functions[f"{args.chiper}_{args.action}"]
               (text, key, args.action))
-
+    # если шифр не стеганография то все функуии принимают text, key, action
+    # (некоторые первые несколько из них). если шифр стеганография, функции
+    # принимают аргументы, которые не логично называть text, key, action
+    # если бы стеганография была в словаре, было бы менее понятно,
+    # что происходит
     elif args.chiper == "steg":
         code = Stegonography()
         if args.action == "encrypt":
