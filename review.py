@@ -44,7 +44,7 @@ with open(args.txt_file, "r+") as f:
     params = (text, key, args.action)
 
     if args.action == "hack":
-        params = [text]
+        params = (text, )
     if args.chiper == "vernam" or args.chiper == "vigenere":
         params = (text, key)
     if args.chiper == "steg" and args.action == "encrypt":
