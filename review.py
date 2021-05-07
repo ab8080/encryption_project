@@ -35,22 +35,22 @@ with open(args.txt_file, "r+") as f:
         "vernam_decrypt": Vernam().encrypt_decrypt,
 
         "hill_encrypt": Hill().encrypt_decrypt,
-        "hill_decrypt": Hill().encrypt_decrypt
+        "hill_decrypt": Hill().encrypt_decrypt,
+
+        "steg_encrypt": Stegonography().encrypt,
+        "steg_decrypt": Stegonography().decrypt
 
     }
-    if args.chiper != "steg":
-        print(list_of_functions[f"{args.chiper}_{args.action}"]
-              (text, key, args.action))
-    # если шифр не стеганография то все функуии принимают text, key, action
-    # (некоторые первые несколько из них). если шифр стеганография, функции
-    # принимают аргументы, которые не логично называть text, key, action
-    # если бы стеганография была в словаре, было бы менее понятно,
-    # что происходит
-    elif args.chiper == "steg":
-        code = Stegonography()
-        if args.action == "encrypt":
-            code.encrypt(args.input_img, args.output_img_or_chars_num,
-                         args.txt_file)
-        if args.action == "decrypt":
-            code.decrypt(args.input_img, args.txt_file,
-                         int(args.output_img_or_chars_num))
+    params = (text, key, args.action)
+
+    if args.action == "hack":
+        params = [text]
+    if args.chiper == "vernam" or args.chiper == "vigenere":
+        params = (text, key)
+    if args.chiper == "steg" and args.action == "encrypt":
+        params = (args.input_img, args.output_img_or_chars_num, args.txt_file)
+    if args.chiper == "steg" and args.action == "decrypt":
+        params = (args.input_img, args.txt_file,
+                  int(args.output_img_or_chars_num))
+
+    print(list_of_functions[f"{args.chiper}_{args.action}"](*params))
